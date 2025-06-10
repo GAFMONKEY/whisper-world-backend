@@ -30,11 +30,17 @@ export class User {
   @Column()
   readonly gender!: Gender;
 
-  @Column()
+  @Column({ unique: true })
   readonly email!: string;
 
   @Column()
   readonly password!: string;
+  
+  @Column('date')
+  readonly birthDate!: Date;
+  
+  @Column('simple-array')
+  readonly interests!: string[];
 
   @Column('simple-array')
   readonly datingPreferences!: Gender[];

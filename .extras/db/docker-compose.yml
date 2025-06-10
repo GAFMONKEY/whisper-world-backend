@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:17-alpine
-    container_name: whisper-world
+    container_name: whisper_world
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: p
