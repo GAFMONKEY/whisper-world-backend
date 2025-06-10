@@ -33,19 +33,17 @@ export class UserController {
     return this.userService.findMatches(userId);
   }
   
-  // // TODO
-  // @Post(':sourceUserId/like/:targetUserId')
-  // @ApiResponse({ status: 200, description: 'Likes a user' })
-  // @ApiResponse({ status: 404, description: 'User not found' })
-  // async likeUser(@Param('id') id: string) {
-  //
-  // }
-  //
-  // // TODO
-  // @Post(':sourceUserId/pass/:targetUserId')
-  // @ApiResponse({ status: 200, description: 'Passes a user' })
-  // @ApiResponse({ status: 404, description: 'User not found' })
-  // async passUser(@Param('id') id: string) {
-  //
-  // }
+  @Post(':sourceUserId/like/:targetUserId')
+  @ApiResponse({ status: 200, description: 'Likes a user', schema: { type: 'object', properties: { matched: { type: 'boolean' } }} })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async likeUser(@Param('sourceUserId') sourceUserId: string, @Param('targetUserId') targetUserId: string) {
+    return this.userService.likeUser(sourceUserId, targetUserId);
+  }
+
+  @Post(':sourceUserId/pass/:targetUserId')
+  @ApiResponse({ status: 200, description: 'Passes a user' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async passUser(@Param('sourceUserId') sourceUserId: string, @Param('targetUserId') targetUserId: string) {
+    return this.userService.passUser(sourceUserId, targetUserId);
+  }
 }

@@ -1,4 +1,3 @@
--- Make sure pgcrypto (gen_random_uuid) is available
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 INSERT INTO "user"
@@ -9,14 +8,14 @@ INSERT INTO "user"
  "interests",
  "likert")
 VALUES
-    ('b6f3e519-a1f4-489a-bd54-6e6db33e2e29', 'Alice',   'Anderson', 'male',
+    ('00000000-0000-0000-0000-000000000000', 'Alice',   'Anderson', 'male',
      '1998-02-14',
      'alice.anderson@example.com', 'password123',
      'female,male,other',
      'hiking,reading,cooking',
      '{"closeness":4,"openness":4,"quietness":2}'),
 
-    (gen_random_uuid(), 'Bob',     'Brown',    'female',
+    ('00000000-0000-0000-0000-000000000001', 'Bob',     'Brown',    'female',
      '1995-07-30',
      'bob.brown@example.com',      'password123',
      'other,male',

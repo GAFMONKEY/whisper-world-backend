@@ -39,15 +39,15 @@ export class UserResponseDto {
   @ApiProperty({ type: [String], enum: ['male', 'female', 'other'] })
   datingPreferences!: ('male' | 'female' | 'other')[];
   
-  @ApiProperty({ type: [String], description: 'UUIDs of current matches' })
-  matches!: string[];
-  
-  @ApiProperty({ type: [String], description: 'UUIDs of past matches' })
-  pastMatches!: string[];
-  
   @Type(() => LikertQuestionsDto)
   @ApiProperty({ type: LikertQuestionsDto })
   likert!: LikertQuestionsDto;
+  
+  @ApiProperty({ type: [String], example: ['b3a77d4c-7ec9-4fd2-a3f9-a9c4e39d9b20'] })
+  likedUsers!: string[];
+  
+  @ApiProperty({ type: [String], example: ['b3a77d4c-7ec9-4fd2-a3f9-a9c4e39d9b20'] })
+  passedUsers!: string[];
   
   static fromEntity(u: User): UserResponseDto {
     const dto = new UserResponseDto();
@@ -60,8 +60,8 @@ export class UserResponseDto {
     dto.interests = u.interests;
     dto.datingPreferences = u.datingPreferences;
     dto.likert = u.likert as LikertQuestionsDto;
-    dto.matches = u.matches?.map(m => m.id!) ?? [];
-    dto.pastMatches = u.pastMatches ?? [];
+    dto.likedUsers = u.likedUsers;
+    dto.passedUsers = u.passedUsers;
     return dto;
   }
 }

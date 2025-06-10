@@ -47,17 +47,23 @@ export class User {
 
   @Column({ type: 'jsonb' })
   readonly likert!: LikertQuestions;
-
-  @ManyToMany(() => User)
-  @JoinTable()
-  readonly matches: User[] | undefined;
-
+  
   @Column('simple-array', { default: [] })
-  readonly pastMatches: string[] | undefined;
-
+  likedUsers: string[];
+  
+  @Column('simple-array', { default: [] })
+  passedUsers: string[];
+  
   @OneToMany(() => Match, (match) => match.user1)
   readonly matchesInitiated: Match[] | undefined;
 
   @OneToMany(() => Match, (match) => match.user2)
   readonly matchesReceived: Match[] | undefined;
+  
+  getAllMatches(): Match[] {
+    return [
+      ...(this.matchesInitiated || []),
+      ...(this.matchesReceived || [])
+    ];
+  }
 }

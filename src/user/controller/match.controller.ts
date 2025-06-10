@@ -1,39 +1,37 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post } from '@nestjs/common';
-import { UserService } from '../service/user.service';
+import { Controller, Delete, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { MatchResponseDto } from "../dto/matchResponse.dto";
-import { ChatMessageResponseDto } from "../dto/chatMessageResponse.dto";
+import { MatchService } from '../service/match.service';
 
 @ApiTags('matches')
 @Controller('matches')
 export class MatchController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly matchService: MatchService) {}
   
-  // // TODO
-  // @Get(':userId')
-  // @ApiResponse({ status: 200, description: 'Returns all matches for the user', type: [MatchResponseDto] })
-  // async getAllMatches(@Param('userId') userId: string): Promise<MatchResponseDto[]> {
-  //
-  // }
-  //
-  // // TODO
-  // @Get(':matchId')
-  // @ApiResponse({ status: 200, description: 'Returns the match with matchId', type: MatchResponseDto })
-  // @ApiResponse({ status: 404, description: 'Match not found' })
-  // async findMatch(@Param('matchId') matchId: string): Promise<MatchResponseDto> {
-  //
-  // }
-  //
-  // // TODO
-  // @Delete(':matchId')
-  // @HttpCode(204)
-  // @ApiResponse({ status: 204, description: 'Removes a match'})
-  // @ApiResponse({ status: 404, description: 'Match not found' })
-  // async unmatchUser(@Param('matchId') matchId: string): Promise<void> {
-  //
-  // }
-  //
-  //
+  @Get(':userId')
+  @ApiResponse({ status: 200, description: 'Returns all matches for the user', type: [MatchResponseDto] })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async getAllMatches(@Param('userId') userId: string): Promise<MatchResponseDto[]> {
+    const matches = await this.matchService.getAllMatchesForUser(userId);
+    return matches.map(match => MatchResponseDto.fromEntity(match));
+  }
+
+  @Get(':matchId')
+  @ApiResponse({ status: 200, description: 'Returns the match with matchId', type: MatchResponseDto })
+  @ApiResponse({ status: 404, description: 'Match not found' })
+  async findMatch(@Param('matchId') matchId: string): Promise<MatchResponseDto> {
+    const match = await this.matchService.findMatchById(matchId);
+    return MatchResponseDto.fromEntity(match, true);
+  }
+
+  @Delete(':matchId')
+  @HttpCode(204)
+  @ApiResponse({ status: 204, description: 'Removes a match'})
+  @ApiResponse({ status: 404, description: 'Match not found' })
+  async unmatchUser(@Param('matchId') matchId: string): Promise<void> {
+    await this.matchService.deleteMatch(matchId);
+  }
+
   // // TODO
   // @Get(':matchId/chat-messages')
   // @ApiResponse({ status: 200, description: 'Returns the chat messages for the match', type: [ChatMessageResponseDto] })
