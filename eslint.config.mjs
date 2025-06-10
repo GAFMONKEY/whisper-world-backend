@@ -1,34 +1,60 @@
-// @ts-check
 import eslint from '@eslint/js';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import importPlugin from 'eslint-plugin-import';
+import prettierPlugin from 'eslint-plugin-prettier';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
+import globals from 'globals';
 
 export default tseslint.config(
-  {
-    ignores: ['eslint.config.mjs'],
-  },
-  eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  eslintPluginPrettierRecommended,
-  {
-    languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.jest,
+    eslint.configs.recommended,
+    ...tseslint.configs.recommendedTypeChecked,
+    prettierRecommended,
+    {
+      plugins: {
+        import: importPlugin,
+        prettier: prettierPlugin
       },
-      sourceType: 'commonjs',
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+      settings: {
+        'import/resolver': { typescript: true }
       },
-    },
-  },
-  {
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn'
-    },
-  },
+      ignores: ['eslint.config.mjs', 'dist', 'coverage'],
+      languageOptions: {
+        parserOptions: {
+          projectService: true,
+          tsconfigRootDir: import.meta.dirname
+        },
+        globals: {
+          ...globals.node,
+          ...globals.jest
+        }
+      },
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'warn',
+        '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+        '@typescript-eslint/no-floating-promises': 'error',
+        '@typescript-eslint/consistent-type-imports': [
+          'error',
+          { fixStyle: 'inline-type-imports' }
+        ],
+        '@typescript-eslint/no-unsafe-argument': 'warn',
+        'import/first': 'error',
+        'import/newline-after-import': 'error',
+        'import/order': [
+          'error',
+          {
+            groups: [
+              'builtin',
+              'external',
+              'internal',
+              'parent',
+              'sibling',
+              'index'
+            ],
+            'newlines-between': 'always',
+            alphabetize: { order: 'asc', caseInsensitive: true }
+          }
+        ],
+        'prettier/prettier': 'warn'
+      }
+    }
 );
