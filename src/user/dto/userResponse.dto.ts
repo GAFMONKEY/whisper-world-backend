@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from "../entity/user.entity";
+import { Answer, Gender, Intentions, Lifestyle, User } from '../entity/user.entity';
 import { Type } from "@nestjs/class-transformer";
+import { Column } from 'typeorm';
 
 export class LikertQuestionsDto {
   @ApiProperty({ example: 5 })
@@ -24,7 +25,7 @@ export class UserResponseDto {
   lastName!: string;
   
   @ApiProperty({ example: 'female' })
-  gender!: 'male' | 'female' | 'other';
+  gender!: Gender;
   
   @ApiProperty({ example: 'alice.anderson@example.com' })
   email!: string;
@@ -37,7 +38,7 @@ export class UserResponseDto {
   interests!: string[];
   
   @ApiProperty({ type: [String], enum: ['male', 'female', 'other'] })
-  datingPreferences!: ('male' | 'female' | 'other')[];
+  datingPreferences!: Gender[];
   
   @Type(() => LikertQuestionsDto)
   @ApiProperty({ type: LikertQuestionsDto })
@@ -48,6 +49,14 @@ export class UserResponseDto {
   
   @ApiProperty({ type: [String], example: ['b3a77d4c-7ec9-4fd2-a3f9-a9c4e39d9b20'] })
   passedUsers!: string[];
+  
+  answers!: Answer[]
+  
+  intentions!: Intentions[];
+  
+  lifestyle!: Lifestyle;
+  
+  accentColor!: string; // hexcode of a color
   
   static fromEntity(u: User): UserResponseDto {
     const dto = new UserResponseDto();
@@ -62,6 +71,10 @@ export class UserResponseDto {
     dto.likert = u.likert as LikertQuestionsDto;
     dto.likedUsers = u.likedUsers;
     dto.passedUsers = u.passedUsers;
+    dto.answers = u.answers;
+    dto.intentions = u.intentions;
+    dto.lifestyle = u.lifestyle;
+    dto.accentColor = u.accentColor;
     return dto;
   }
 }
