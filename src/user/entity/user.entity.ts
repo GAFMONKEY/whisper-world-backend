@@ -46,7 +46,7 @@ export class User {
   @JoinTable()
   readonly matches: User[] | undefined;
 
-  @Column('simple-array')
+  @Column('simple-array', { default: [] })
   readonly pastMatches: string[] | undefined;
 
   @OneToMany(() => Match, (match) => match.user1)
