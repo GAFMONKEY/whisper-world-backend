@@ -4,7 +4,7 @@ import { entities } from "./entity/entities";
 import { UserController } from "./controller/user.controller";
 import { UserService } from "./service/user.service";
 import { AuthController } from "./controller/auth.controller";
-import { AuthService } from "./service/authService";
+import { AuthService } from "./service/auth.service";
 import { MatchController } from './controller/match.controller';
 import { MatchService } from './service/match.service';
 
