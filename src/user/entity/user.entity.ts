@@ -72,10 +72,10 @@ export type Politics =
   | 'left'
   | 'right'
   | 'center'
-  | 'left-center'
-  | 'right-center'
-  | 'not political';
+  | 'not political'
+  | 'not specified';
 export type YesNoMaybe = 'yes' | 'no' | 'maybe';
+export type YesNoNotspecified = YesNo | 'not specified';
 export type LikertQuestions = {
   closeness: number;
   openness: number;
@@ -87,7 +87,7 @@ export type Lifestyle = {
   alcohol: YesNoSometimes;
   smoking: YesNoSometimes;
   cannabis: YesNoSometimes;
-  politics: Politics;
+  politics: Politics
 };
 export type Answer = {
   cluster: string;

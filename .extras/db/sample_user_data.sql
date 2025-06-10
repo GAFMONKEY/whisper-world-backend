@@ -53,7 +53,7 @@ VALUES
      '{"closeness":4,"openness":4,"quietness":1}',
      '[{"cluster":"kunst","question":"Was inspiriert dich beim Malen?","textAnswer":"Die Natur und menschliche Emotionen fließen in meine Werke ein."},{"cluster":"entspannung","question":"Wie entspannst du dich nach einem stressigen Tag?","textAnswer":"Yoga und Meditation helfen mir, zur Ruhe zu kommen."}]',
      'long-term relationship,casual dating',
-     '{"childrenWish":"yes","children":"no","alcohol":"sometimes","smoking":"no","cannabis":"no","politics":"left-center"}',
+     '{"childrenWish":"yes","children":"no","alcohol":"sometimes","smoking":"no","cannabis":"no","politics":"left"}',
      '#F39C12'),
 
     (gen_random_uuid(), 'Ethan',   'Evans',    'female',
@@ -64,7 +64,7 @@ VALUES
      '{"closeness":1,"openness":4,"quietness":5}',
      '[{"cluster":"sport","question":"Warum läufst du gerne?","textAnswer":"Laufen gibt mir Klarheit und hilft beim Stressabbau."},{"cluster":"kochen","question":"Was kochst du am liebsten?","textAnswer":"Ich experimentiere gerne mit asiatischen Gewürzen und Gerichten."}]',
      'long-term relationship',
-     '{"childrenWish":"maybe","children":"no","alcohol":"no","smoking":"no","cannabis":"no","politics":"right-center"}',
+     '{"childrenWish":"maybe","children":"no","alcohol":"no","smoking":"no","cannabis":"no","politics":"right"}',
      '#9B59B6'),
 
     (gen_random_uuid(), 'Fiona',   'Foster',   'non-binary',
