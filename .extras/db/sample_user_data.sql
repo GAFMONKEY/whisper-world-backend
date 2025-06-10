@@ -3,13 +3,13 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 INSERT INTO "user"
 ("id", "firstName", "lastName", "gender",
- "birthDate",                   -- NEW
+ "birthDate",
  "email", "password",
- "datingPreferences",           -- simple-array
- "interests",                   -- NEW simple-array
- "likert")                      -- jsonb
+ "datingPreferences",
+ "interests",
+ "likert")
 VALUES
-    (gen_random_uuid(), 'Alice',   'Anderson', 'male',
+    ('b6f3e519-a1f4-489a-bd54-6e6db33e2e29', 'Alice',   'Anderson', 'male',
      '1998-02-14',
      'alice.anderson@example.com', 'password123',
      'female,male,other',
