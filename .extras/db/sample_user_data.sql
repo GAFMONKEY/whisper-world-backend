@@ -121,3 +121,5 @@ VALUES
      'long-term relationship',
      '{"childrenWish":"maybe","children":"no","alcohol":"sometimes","smoking":"no","cannabis":"no","politics":"center"}',
      '#34495E');
+
+update "user" set "likedUsers" = '00000000-0000-0000-0000-000000000000' where id != '00000000-0000-0000-0000-000000000000';

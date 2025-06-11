@@ -33,16 +33,16 @@ export class User {
   @Column({ type: 'jsonb' })
   readonly likert!: LikertQuestions;
 
-  @Column('simple-array', { default: [] })
+  @Column('simple-array', { default: '' })
   likedUsers!: string[];
 
-  @Column('simple-array', { default: [] })
+  @Column('simple-array', { default: '' })
   passedUsers!: string[];
 
   @Column('jsonb', { default: [] })
   answers!: Answer[];
 
-  @Column('simple-array', { default: [] })
+  @Column('simple-array', { default: '' })
   readonly intentions!: Intentions[];
 
   @Column('jsonb')
