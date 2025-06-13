@@ -1,5 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
+DELETE FROM "user";
+
 INSERT INTO "user"
 ("id", "firstName", "lastName", "gender",
  "birthDate",
