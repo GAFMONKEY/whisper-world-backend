@@ -56,6 +56,10 @@ export class User {
 
   @OneToMany(() => Match, (match) => match.user2)
   readonly matchesReceived: Match[] | undefined;
+  
+  get allMatches(): Match[] {
+    return [...(this.matchesInitiated || []), ...(this.matchesReceived || [])];
+  }
 }
 
 export type Gender = 'male' | 'female' | 'non-binary';

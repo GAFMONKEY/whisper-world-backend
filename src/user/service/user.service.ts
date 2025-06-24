@@ -29,7 +29,9 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return this.userRepo.find({ where: { id: Not(id) } });
+    const otherUsers = await this.userRepo.find({ where: { id: Not(id) } });
+    const nonMatchedUsers = otherUsers.filter(user => user.allMatches.every(match => match.user2.id !== id || match.user1.id !== id));
+    return nonMatchedUsers.filter(user => user.likedUsers.includes(id) || user.passedUsers.includes(id));
   }
 
   async likeUser(sourceUserId: string, targetUserId: string): Promise<{ matched: boolean, matchId?: string }> {
