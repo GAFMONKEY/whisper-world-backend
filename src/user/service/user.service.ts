@@ -25,13 +25,14 @@ export class UserService {
 
   // TODO: implement proper matching algorithm
   async findMatches(id: string): Promise<User[]> {
-    const user = await this.findById(id);
-    if (!user) {
+    const requestingUser = await this.findById(id);
+    if (!requestingUser) {
       throw new NotFoundException('User not found');
     }
     const otherUsers = await this.userRepo.find({ where: { id: Not(id) } });
     const nonMatchedUsers = otherUsers.filter(user => user.allMatches.every(match => match.user2.id !== id || match.user1.id !== id));
-    return nonMatchedUsers.filter(user => user.likedUsers.includes(id) || user.passedUsers.includes(id));
+    const nonLikedPassedMatched = nonMatchedUsers.filter(user => !(requestingUser.likedUsers.includes(user.id) || requestingUser.passedUsers.includes(user.id)));
+    return nonLikedPassedMatched;
   }
 
   async likeUser(sourceUserId: string, targetUserId: string): Promise<{ matched: boolean, matchId?: string }> {
