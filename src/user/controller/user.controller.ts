@@ -35,7 +35,7 @@ export class UserController {
   })
   @ApiResponse({ status: 404, description: 'User not found' })
   async findMatches(@Param('userId') userId: string) {
-    return this.userService.findMatches(userId);
+    return this.userService.findPotentialMatches(userId);
   }
 
   @Post(':sourceUserId/like/:targetUserId')

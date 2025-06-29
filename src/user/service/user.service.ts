@@ -1,4 +1,9 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entity/user.entity';
 import { Not, Repository } from 'typeorm';
@@ -26,18 +31,39 @@ export class UserService {
   }
 
   // TODO: implement proper matching algorithm
-  async findMatches(id: string): Promise<User[]> {
+  async findPotentialMatches(id: string): Promise<User[]> {
     const requestingUser = await this.findById(id);
     if (!requestingUser) {
       throw new NotFoundException('User not found');
     }
-    const otherUsers = await this.userRepo.find({ where: { id: Not(id) } });
-    const nonMatchedUsers = otherUsers.filter(user => user.allMatches.every(match => match.user2.id !== id || match.user1.id !== id));
-    const nonLikedPassedMatched = nonMatchedUsers.filter(user => !(requestingUser.likedUsers.includes(user.id) || requestingUser.passedUsers.includes(user.id)));
+    const otherUsers = await this.userRepo.find({
+      where: { id: Not(id) },
+      relations: [
+        'matchesInitiated',
+        'matchesReceived',
+        'matchesInitiated.user1',
+        'matchesInitiated.user2',
+        'matchesReceived.user1',
+        'matchesReceived.user2',
+      ],
+    });
+    const nonMatchedUsers = otherUsers.filter((user) =>
+      user.allMatches.every((match) => match.user2.id !== id && match.user1.id !== id),
+    );
+    const nonLikedPassedMatched = nonMatchedUsers.filter(
+      (user) =>
+        !(
+          requestingUser.likedUsers.includes(user.id) ||
+          requestingUser.passedUsers.includes(user.id)
+        ),
+    );
     return nonLikedPassedMatched;
   }
 
-  async likeUser(sourceUserId: string, targetUserId: string): Promise<{ matched: boolean, matchId?: string }> {
+  async likeUser(
+    sourceUserId: string,
+    targetUserId: string,
+  ): Promise<{ matched: boolean; matchId?: string }> {
     const sourceUser = await this.findById(sourceUserId);
     const targetUser = await this.findById(targetUserId);
 
@@ -78,45 +104,45 @@ export class UserService {
     await this.userRepo.save(sourceUser);
     return { matched: false };
   }
-  
+
   async passUser(sourceUserId: string, targetUserId: string): Promise<void> {
     const sourceUser = await this.userRepo.findOne({ where: { id: sourceUserId } });
     const targetUser = await this.userRepo.findOne({ where: { id: targetUserId } });
-    
+
     if (!sourceUser || !targetUser) {
       throw new NotFoundException('User not found');
     }
-    
+
     if (sourceUserId === targetUserId) {
       throw new BadRequestException('Cannot pass yourself');
     }
-    
+
     if (sourceUser.passedUsers.includes(targetUserId)) {
       return;
     }
-    
+
     if (sourceUser.likedUsers.includes(targetUserId)) {
-      sourceUser.likedUsers = sourceUser.likedUsers.filter(id => id !== targetUserId);
+      sourceUser.likedUsers = sourceUser.likedUsers.filter((id) => id !== targetUserId);
     }
-    
+
     sourceUser.passedUsers.push(targetUserId);
-    
+
     await this.userRepo.save(sourceUser);
   }
-  
+
   async userExistsById(userId: string): Promise<boolean> {
     const count = await this.userRepo.count({
-      where: { id: userId }
+      where: { id: userId },
     });
     return count > 0;
   }
-  
+
   async createUser(userDto: UserCreateDTO): Promise<UserResponseDto> {
     const existingUser = await this.findByEmail(userDto.email);
     if (existingUser) {
       throw new ConflictException('User with this email already exists');
     }
-    
+
     const user = this.userRepo.create({
       firstName: userDto.firstName,
       lastName: userDto.lastName,
@@ -134,9 +160,9 @@ export class UserService {
       likedUsers: [],
       passedUsers: [],
     });
-    
+
     const savedUser = await this.userRepo.save(user);
-    
+
     return UserResponseDto.fromEntity(savedUser);
   }
 }

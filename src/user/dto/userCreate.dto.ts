@@ -4,22 +4,22 @@ import { Type } from 'class-transformer';
 import { Gender, Intentions, YesNo, YesNoSometimes, Politics, YesNoMaybe, LikertQuestions, Lifestyle, Answer } from '../entity/user.entity';
 
 class LikertQuestionsDto implements LikertQuestions {
-  @ApiProperty({ description: 'Closeness score (1-7)', minimum: 1, maximum: 7 })
+  @ApiProperty({ description: 'Closeness score (1-5)', minimum: 1, maximum: 5 })
   @IsNumber()
   @Min(1)
-  @Max(7)
+  @Max(5)
   closeness!: number;
   
-  @ApiProperty({ description: 'Openness score (1-7)', minimum: 1, maximum: 7 })
+  @ApiProperty({ description: 'Openness score (1-5)', minimum: 1, maximum: 5 })
   @IsNumber()
   @Min(1)
-  @Max(7)
+  @Max(5)
   openness!: number;
   
-  @ApiProperty({ description: 'Quietness score (1-7)', minimum: 1, maximum: 7 })
+  @ApiProperty({ description: 'Quietness score (1-5)', minimum: 1, maximum: 5 })
   @IsNumber()
   @Min(1)
-  @Max(7)
+  @Max(5)
   quietness!: number;
 }
 
