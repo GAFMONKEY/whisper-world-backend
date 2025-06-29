@@ -50,6 +50,7 @@ export class UserService {
     const nonMatchedUsers = otherUsers.filter((user) =>
       user.allMatches.every((match) => match.user2.id !== id && match.user1.id !== id),
     );
+    const preferableGender = nonMatchedUsers.filter(user => requestingUser.datingPreferences.includes(user.gender));
     const nonLikedPassedMatched = nonMatchedUsers.filter(
       (user) =>
         !(
