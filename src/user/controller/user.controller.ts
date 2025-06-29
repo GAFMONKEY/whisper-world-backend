@@ -1,7 +1,8 @@
-import { Controller, Get, HttpCode, NotFoundException, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, NotFoundException, Param, Post } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserResponseDto } from '../dto/userResponse.dto';
+import { UserCreateDTO } from '../dto/userCreate.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -63,5 +64,13 @@ export class UserController {
     @Param('targetUserId') targetUserId: string,
   ) {
     return this.userService.passUser(sourceUserId, targetUserId);
+  }
+  
+  @Post()
+  @ApiResponse({ status: 201, description: 'User created successfully' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 409, description: 'User with email already exists' })
+  async createUser(@Body() userDTO: UserCreateDTO) {
+    return this.userService.createUser(userDTO);
   }
 }

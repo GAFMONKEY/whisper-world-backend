@@ -16,7 +16,7 @@ export class MatchService {
   ) {}
 
   async getAllMatchesForUser(userId: string): Promise<Match[]> {
-    const userExists = await this.userService.userExists(userId);
+    const userExists = await this.userService.userExistsById(userId);
     if (!userExists) {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }

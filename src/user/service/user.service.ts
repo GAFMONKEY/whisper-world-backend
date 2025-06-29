@@ -1,8 +1,10 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entity/user.entity';
 import { Not, Repository } from 'typeorm';
 import { Match } from '../entity/match.entity';
+import { UserCreateDTO } from '../dto/userCreate.dto';
+import { UserResponseDto } from '../dto/userResponse.dto';
 
 @Injectable()
 export class UserService {
@@ -102,10 +104,39 @@ export class UserService {
     await this.userRepo.save(sourceUser);
   }
   
-  async userExists(userId: string): Promise<boolean> {
+  async userExistsById(userId: string): Promise<boolean> {
     const count = await this.userRepo.count({
       where: { id: userId }
     });
     return count > 0;
+  }
+  
+  async createUser(userDto: UserCreateDTO): Promise<UserResponseDto> {
+    const existingUser = await this.findByEmail(userDto.email);
+    if (existingUser) {
+      throw new ConflictException('User with this email already exists');
+    }
+    
+    const user = this.userRepo.create({
+      firstName: userDto.firstName,
+      lastName: userDto.lastName,
+      gender: userDto.gender,
+      email: userDto.email,
+      password: userDto.password,
+      birthDate: new Date(userDto.birthDate),
+      interests: userDto.interests,
+      datingPreferences: userDto.datingPreferences,
+      likert: userDto.likert,
+      intentions: userDto.intentions,
+      lifestyle: userDto.lifestyle,
+      accentColor: userDto.accentColor,
+      answers: userDto.answers || [],
+      likedUsers: [],
+      passedUsers: [],
+    });
+    
+    const savedUser = await this.userRepo.save(user);
+    
+    return UserResponseDto.fromEntity(savedUser);
   }
 }
