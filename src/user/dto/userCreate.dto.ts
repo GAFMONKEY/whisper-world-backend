@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, IsArray, IsDateString, IsIn, IsObject, ValidateNested, IsOptional, IsHexColor, ArrayNotEmpty, IsNumber, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
-import { Gender, Intentions, YesNo, YesNoSometimes, Politics, YesNoMaybe, LikertQuestions, Lifestyle, Answer } from '../entity/user.entity';
+import { Gender, Intentions, YesNoNotspecified, YesNoSometimesNotSpecified, Politics, YesNoMaybe, LikertQuestions, Lifestyle, Answer } from '../entity/user.entity';
 
 class LikertQuestionsDto implements LikertQuestions {
   @ApiProperty({ description: 'Closeness score (1-5)', minimum: 1, maximum: 5 })
@@ -24,25 +24,25 @@ class LikertQuestionsDto implements LikertQuestions {
 }
 
 class LifestyleDto implements Lifestyle {
-  @ApiProperty({ description: 'Wish to have children', enum: ['yes', 'no', 'maybe'] })
-  @IsIn(['yes', 'no', 'maybe'])
+  @ApiProperty({ description: 'Wish to have children', enum: ['yes', 'no', 'maybe', 'not specified'] })
+  @IsIn(['yes', 'no', 'maybe', 'not specified'])
   childrenWish!: YesNoMaybe;
   
   @ApiProperty({ description: 'Has children', enum: ['yes', 'no'] })
-  @IsIn(['yes', 'no'])
-  children!: YesNo;
+  @IsIn(['yes', 'no', 'not specified'])
+  children!: YesNoNotspecified;
   
   @ApiProperty({ description: 'Alcohol consumption', enum: ['yes', 'no', 'sometimes'] })
-  @IsIn(['yes', 'no', 'sometimes'])
-  alcohol!: YesNoSometimes;
+  @IsIn(['yes', 'no', 'sometimes', 'not specified'])
+  alcohol!: YesNoSometimesNotSpecified;
   
   @ApiProperty({ description: 'Smoking habits', enum: ['yes', 'no', 'sometimes'] })
-  @IsIn(['yes', 'no', 'sometimes'])
-  smoking!: YesNoSometimes;
+  @IsIn(['yes', 'no', 'sometimes', 'not specified'])
+  smoking!: YesNoSometimesNotSpecified;
   
   @ApiProperty({ description: 'Cannabis usage', enum: ['yes', 'no', 'sometimes'] })
-  @IsIn(['yes', 'no', 'sometimes'])
-  cannabis!: YesNoSometimes;
+  @IsIn(['yes', 'no', 'sometimes', 'not specified'])
+  cannabis!: YesNoSometimesNotSpecified;
   
   @ApiProperty({ description: 'Political orientation', enum: ['left', 'right', 'center', 'not political', 'not specified'] })
   @IsIn(['left', 'right', 'center', 'not political', 'not specified'])

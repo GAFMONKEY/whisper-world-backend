@@ -70,8 +70,8 @@ export type Intentions =
   | 'open to anything'
   | 'short-term relationship'
   | 'long-term relationship';
-export type YesNo = 'yes' | 'no';
-export type YesNoSometimes = YesNo | 'sometimes';
+export type YesNoNotspecified = 'yes' | 'no' | 'not specified';
+export type YesNoSometimesNotSpecified = YesNoNotspecified | 'sometimes';
 export type Politics =
   | 'left'
   | 'right'
@@ -79,18 +79,18 @@ export type Politics =
   | 'not political'
   | 'not specified';
 export type YesNoMaybe = 'yes' | 'no' | 'maybe';
-export type YesNoNotspecified = YesNo | 'not specified';
+export type YesNoMaybeNotspecified = YesNoMaybe | 'not specified';
 export type LikertQuestions = {
   closeness: number;
   openness: number;
   quietness: number;
 };
 export type Lifestyle = {
-  childrenWish: YesNoMaybe;
-  children: YesNo;
-  alcohol: YesNoSometimes;
-  smoking: YesNoSometimes;
-  cannabis: YesNoSometimes;
+  childrenWish: YesNoMaybeNotspecified;
+  children: YesNoNotspecified;
+  alcohol: YesNoSometimesNotSpecified;
+  smoking: YesNoSometimesNotSpecified;
+  cannabis: YesNoSometimesNotSpecified;
   politics: Politics
 };
 export type Answer = {
