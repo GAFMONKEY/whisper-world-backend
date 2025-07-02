@@ -35,6 +35,14 @@ export class MatchService {
     if (!match) {
       throw new NotFoundException('Match not found');
     }
+
+    if (match.chatMessages) {
+      match.chatMessages.sort((a, b) => {
+        const dateA = new Date(a.sentAt);
+        const dateB = new Date(b.sentAt);
+        return dateA.getTime() - dateB.getTime() ;
+      });
+    }
     
     return match;
   }
