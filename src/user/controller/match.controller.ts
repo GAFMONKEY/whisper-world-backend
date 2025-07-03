@@ -38,6 +38,6 @@ export class MatchController {
   @ApiResponse({ status: 201, description: 'Sends a message to the match' })
   @ApiResponse({ status: 404, description: 'Match not found' })
   async sendMessage(@Param('matchId') matchId: string, @Body() body: ChatMessageDto): Promise<void> {
-    await this.matchService.sendMessage(matchId, body.sender, body.message);
+    await this.matchService.sendMessage(matchId, body);
   }
 }

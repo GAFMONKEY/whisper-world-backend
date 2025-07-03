@@ -24,4 +24,10 @@ export class ChatMessage {
 
   @CreateDateColumn()
   sentAt!: Date;
+  
+  @Column()
+  type: string;
+  
+  @Column({ nullable: true })
+  audioDuration?: number;
 }

@@ -16,6 +16,10 @@ export class ChatMessageResponseDto {
 
   @ApiProperty({ example: '2025-06-10T09:15:00.000Z' })
   sentAt: Date;
+  
+  type: string;
+  
+  audioDuration?: number;
 
   static fromEntity(entity: ChatMessage): ChatMessageResponseDto {
     const dto = new ChatMessageResponseDto();
@@ -25,6 +29,8 @@ export class ChatMessageResponseDto {
     dto.senderId = entity.sender?.id!;
     dto.matchId = entity.match?.id!;
     dto.sentAt = entity.sentAt;
+    dto.type = entity.type;
+    dto.audioDuration = entity.audioDuration;
 
     return dto;
   }

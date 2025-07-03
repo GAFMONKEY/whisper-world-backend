@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Match } from '../entity/match.entity';
 import { UserService } from './user.service';
 import { ChatMessage } from '../entity/chat-message.entity';
+import { ChatMessageDto } from '../dto/chatMessage.dto';
 
 @Injectable()
 export class MatchService {
@@ -29,7 +30,7 @@ export class MatchService {
   async findMatchById(matchId: string): Promise<Match> {
     const match = await this.matchRepo.findOne({
       where: { id: matchId },
-      relations: ['user1', 'user2', 'chatMessages', 'chatMessages.sender', "chatMessages.match"],
+      relations: ['user1', 'user2', 'chatMessages', 'chatMessages.sender', 'chatMessages.match'],
     });
 
     if (!match) {
@@ -40,7 +41,7 @@ export class MatchService {
       match.chatMessages.sort((a, b) => {
         const dateA = new Date(a.sentAt);
         const dateB = new Date(b.sentAt);
-        return dateA.getTime() - dateB.getTime() ;
+        return dateA.getTime() - dateB.getTime();
       });
     }
     
@@ -58,24 +59,26 @@ export class MatchService {
 
     await this.matchRepo.remove(match);
   }
-  
-  async sendMessage(matchId: string, senderId: string, messageText: string): Promise<void> {
+
+  async sendMessage(matchId: string, message: ChatMessageDto): Promise<void> {
     const match = await this.findMatchById(matchId);
-    
-    const sender = await this.userService.findById(senderId);
+
+    const sender = await this.userService.findById(message.sender);
     if (!sender) {
       throw new NotFoundException('Sender not found');
     }
-    
+
     if (!(sender.id === match.user1.id || sender.id === match.user2.id)) {
       throw new BadRequestException('Sender not part of this match');
     }
-    
+
     const chatMessage = new ChatMessage();
-    chatMessage.message = messageText;
+    chatMessage.message = message.message;
     chatMessage.sender = sender;
     chatMessage.match = match;
-    
+    chatMessage.type = message.type;
+    chatMessage.audioDuration = message.audioDuration;
+
     await this.chatMessageRepository.save(chatMessage);
   }
 }
